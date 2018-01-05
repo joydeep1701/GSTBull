@@ -1,0 +1,70 @@
+{% extends 'layout.html' %} {% block main %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.special.cards .image').dimmer({
+      on: 'hover'
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  function login_handler(gstin, name) {
+    var header = `<i class='sign in icon'></i>
+                  Authentication Warning!`
+
+    var message = "";
+    message += "<p style=\"text-align:center;\">Do you want to Authenticate "+ name + " ?</p>";
+
+    document.getElementById('confirmation_modal_header').innerHTML = header;
+    document.getElementById('confirmation_modal_content').innerHTML = message;
+
+    var success_form = `<form class="" action="" method="post">
+                          <input type="hidden" name='gstin' value="${ gstin }" />
+                          <div class="ui red basic cancel inverted button">
+                            <i class="remove icon"></i>
+                            No
+                          </div>
+                          <button type="submit" class="ui green ok inverted button">
+                            <i class=\"sign in icon\"></i>
+                            Yes
+                          </button>
+                        </form>`;
+    //console.log(success_form);
+    document.getElementById('confirmation_modal_actions').innerHTML = success_form;
+    $('#confirmation_modal').modal('show');
+  }
+</script>
+
+  <div class="ui middle aligned list">
+    <div class="ui container three column grid">
+        <div class="row">
+          <div class="column"></div>
+          <div class="column">
+            <h2 style="text-align:center;">Authenticate</h2>
+            <div class="ui horizontal divider">
+              Select One
+            </div>
+            {% for item in authList %}
+            <div class="item">
+              <div class="content ui raised segment"
+                onclick="login_handler('{{item.gstin}}','{{item.name}}')">
+                <div class="header">
+                  <h3>{{item.name}}</h3>
+                </div>
+                <div class="ui label blue">
+                  <p>{{item.gstin}}</p>
+                </div>
+                <div class="ui label yellow">
+                  <p>{{item.dealer}}</p>
+                </div>
+
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="column"></div>
+        </div>
+  </div>
+</div>
+
+{% endblock %}
