@@ -1,0 +1,127 @@
+{% extends 'layout.html' %} {% block main %}
+<h2 class="ui header">
+  <i class="address card icon"></i>
+  <div class="content">
+    Sales Voucher
+  </div>
+</h2>
+<div class="ui horizontal divider">
+  Create New
+</div>
+
+<form class="ui form" action="index.html" method="post">
+  <h4 class="ui dividing header">
+    General Information
+  </h4>
+  <div class="field">
+    <div class="two fields">
+      <div class="field">
+        <label>Ledger Name</label>
+        <input type="text" name="" value="">
+      </div>
+      <div class="field">
+        <label>Invoice No</label>
+        <input type="text" name="" value="">
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Date</label>
+    <div class="ui calendar" id="datepicker" style="width:200px">
+      <div class="ui input left icon">
+        <i class="calendar icon"></i>
+        <input type="text" placeholder="Date" name="date">
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>Tax Rate</th>
+          <th>Amount</th>
+          <th>Tax</th>
+          <th>Amount With Tax</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <select class="ui fluid dropdown" name="rate">
+              <option value="">Taxrate</option>
+              <option value="0">0</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" name="" value="">
+          </td>
+          <td>
+            <input type="text" name="" value="">
+          </td>
+          <td>
+            <input type="text" name="" value="">
+          </td>
+          <td>
+
+                <button type="button" class="ui orange button"><i class="trash icon"></i></button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>
+            <button type="button" class="ui teal button"><i class="plus icon"></i></button>
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <th>
+            <div class="ui buttons">
+
+              <button class="ui button"><i class="minus icon"></i></button>
+              <div class="or"></div>
+              <button class="ui positive button"><i class="plus icon"></i></button>
+            </div>
+
+          </th>
+          <th><label>Round off</label><input type="text" name="" value=""></th>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <th>Invoice Value:</th>
+          <th></th>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <br>
+  <div class="ui field">
+    <button type="submit" name="button" class="ui primary button">Save</button>
+  </div>
+
+</form>
+
+<br/>
+<script type="text/javascript">
+  var today = new Date();
+  var date = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+  document.getElementsByName('date')[0].value = date;
+
+  $(document).ready(function() {
+    $('#datepicker').calendar({
+      type: 'date'
+    });
+  });
+</script>
+{% endblock%}

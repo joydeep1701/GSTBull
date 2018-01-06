@@ -39,6 +39,12 @@ def editledger(name):
         ledgers.create(request.form, session['company_id'])
         return render_template('add_ledger.html')
 
+@app.route('/sales/add', methods=['GET','POST'])
+@login_required
+def addsales():
+    return render_template('add_sales.html')
+
+
 
 @app.route('/')
 @login_required
