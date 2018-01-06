@@ -5,7 +5,7 @@ import json
 from helper import *
 from sql import *
 import authenticator
-
+import ledgers
 
 
 app = Flask(__name__)
@@ -15,10 +15,28 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 db = SQL("sqlite:///watchdog.db")
 
-@app.route('/ledger/add')
+@app.route('/ledger/add', methods=['GET','POST'])
 @login_required
 def addledger():
     if request.method == "GET":
+        return render_template('add_ledger.html')
+    else:
+        ledgers.create(request.form, session['company_id'])
+        return render_template('add_ledger.html')
+
+@app.route('/ledger/search/<s>')
+@login_required
+def searchledger(s):
+    return json.dumps(ledgers.search(s, session['company_id']))
+
+@app.route('/ledger/edit/<name>', methods=['GET','POST'])
+@login_required
+def editledger(name):
+    if request.method == "GET":
+        return render_template('add_ledger.html',
+            data=ledgers.search(s, session['company_id'])[0])
+    else:
+        ledgers.create(request.form, session['company_id'])
         return render_template('add_ledger.html')
 
 
