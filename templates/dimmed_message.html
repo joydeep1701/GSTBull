@@ -1,0 +1,21 @@
+<div class="ui page dimmer" id="dimmed_message"></div>
+
+<script type="text/javascript">
+function showMessage(heading, content) {
+    var message = document.getElementById('dimmed_message');
+    innerHTML = `  <div class="content">
+                      <div class="center">
+                        <h2 class="ui inverted icon header">
+                          <i class="warning sign icon"></i>
+                          ${ heading }
+                        </h2>
+                        <p> ${ content}</p>
+                      </div>
+                    </div>`
+
+    message.innerHTML = innerHTML;
+    $('#dimmed_message').dimmer('show');
+
+}
+
+</script>

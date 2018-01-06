@@ -1,0 +1,148 @@
+{% extends 'layout.html' %} {% block main %}
+
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p></p>
+    </div>
+    <table class="ui celled padded table">
+    </table>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  document.getElementsByClassName('sidebar')[0].classList.toggle('visible')
+  document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
+</script>
+<h3>GSTR-3-month</h3>
+<div class="ui horizontal divider">
+  PART - A
+</div>
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p>3. Turnover</p>
+    </div>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>Type of Turnover</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>(i) Taxable [other than zero rated]</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(ii) Zero rated supply on payment of Tax</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(iii) Zero rated supply without payment of Tax</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(iv) Deemed exports</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(v) Exempted </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(vi) Nil Rated</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>(vii) Non-GST supply</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td></td>
+        </tr>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="ui horizontal divider">
+  PART - A: Outward Supplies
+</div>
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p>4.1 Inter-State supplies (Net Supply for the month) </p>
+    </div>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Rate</th>
+          <th>Taxable Value</th>
+          <th>Integrated Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A. Taxable supplies (other than reverse charge and zero rated supply) [Tax Rate Wise]</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>B. Supplies attracting reverse charge-Tax payable by recipient of supply </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>C. Zero rated supply made with payment of Integrated Tax</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p>4.2 Intra-State supplies (Net supply for the month) </p>
+    </div>
+    <table class="ui celled padded table">
+    </table>
+  </div>
+</div>
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p></p>
+    </div>
+    <table class="ui celled padded table">
+    </table>
+  </div>
+</div>
+{% endblock %}
