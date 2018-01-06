@@ -39,6 +39,9 @@ def login():
 
         return redirect(url_for('login'))
 
-
+@app.route('/gstr3b')
+@login_required
+def gstr3b():
+    return render_template('gstr3b.html')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)

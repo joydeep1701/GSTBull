@@ -5,12 +5,11 @@
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
   <meta charset="utf-8" />
   <meta content="initial-scale=1, width=device-width" name="viewport" />
-  <!-- documentation at http://getbootstrap.com/, alternative themes at https://www.bootstrapcdn.com/bootswatch/ -->
 
   <link rel="stylesheet" href="/static/semantic/semantic.css">
 
-  <script src="static/semantic/jquery-3.2.1.js"></script>
-  <script src="static/semantic/semantic.js"></script>
+  <script src="/static/semantic/jquery-3.2.1.js"></script>
+  <script src="/static/semantic/semantic.js"></script>
 
   <title>{% block title %}{% endblock %} | GSTBull</title>
   {% block head %} {% endblock %}
@@ -26,59 +25,10 @@
 </head>
 
 <body>
-  {% if session.company_id %}
-  <div class="ui left vertical labeled icon sidebar menu  visible" id="sidebar">
-    <a class="item">
-      <i class="home icon"></i>
-      Home
-    </a>
-    <a class="item">
-      <i class="block layout icon"></i>
-      Topics
-    </a>
-    <a class="item">
-      <i class="smile icon"></i>
-      Friends
-    </a>
-  </div>
-  <div class="ui right one item vertical labeled icon sidebar menu push visible" id="downbar">
-    <a class="item">
-    <i class="home icon"></i>
-    Home
-  </a>
-    <a class="item">
-    <i class="block layout icon"></i>
-    Sales
-  </a>
-    <a class="item">
-    <i class="smile icon"></i>
-    Ledgers
-  </a>
-    <a class="item">
-    <i class="calendar icon"></i>
-    Purchase
-  </a>
-    <a class="item">
-    <i class="mail icon"></i>
-    Messages
-  </a>
-    <a class="item">
-    <i class="chat icon"></i>
+  {% include 'dimmed_message.html' %}
 
-  </a>
-    <a class="item">
-    <i class="trophy icon"></i>
-    
-  </a>
-    <a class="item">
-    <i class="shop icon"></i>
-    Backup
-  </a>
-    <a class="item">
-    <i class="settings icon"></i>
-    Settings
-  </a>
-  </div>
+  {% if session.company_id %}
+    {% include 'vertical_bars.html' %}
   {% endif %}
 
   <div class="ui container">
@@ -89,91 +39,17 @@
     {% endif %} {% endwith %}
     <main>
       <div class="ui contianer">
-        <div class="ui menu">
-          <a class="item">
-            {% if session.company_id %}
-              {{ session.company_name }}
-            {% else %}
-              GSTBull
-            {% endif %}
-          </a>
-          {% if session.company_id %}
-            <a class="ui dropdown item">
-              Messages
-              <i class="dropdown icon"></i>
-              <div class="menu">
-                <div class="item">
-                  <i class="dropdown icon"></i>
-                  <span class="text">Categories</span>
-                  <div class="menu">
-                    <div class="item">Unread</div>
-                    <div class="item">Promotions</div>
-                    <div class="item">Updates</div>
-                  </div>
-                </div>
-                <div class="item">Archive</div>
-              </div>
-            </a>
-            <a class="item">
-              Browse
-            </a>
-          {% endif %}
-          <div class="right menu">
-            {% if session.company_id %}
-            <div class="item">
-              <div class="ui icon input">
-                <input type="text" placeholder="Search...">
-                <i class="search link icon"></i>
-              </div>
-            </div>
-            <a class="ui item" href="/login"><i class="sign out icon"></i> Sign Out</a>
-            {% else %}
-            <a class="ui item"><i class="cloud upload icon"></i> Backup</a>
-            {% endif %}
-          </div>
-        </div>
-        {% block main %}
-        {% endblock %}
+        {% include 'horizontal_menu.html' %}
+        {% block main %} {% endblock %}
       </div>
     </main>
   </div>
+  {% include 'confirmation_modal.html' %}
+  {% include 'message_modal.html' %}
 
-  <div class="ui tiny modal" id="message_modal">
-    <i class="close icon"></i>
-    <div class="header" id="message_modal_header">
-      Modal Title
-    </div>
-    <div class="image content" id="message_modal_content">
-      <div class="image">
-        An image can appear on left or an icon
-      </div>
-      <div class="description">
-        A description can appear on the right
-      </div>
-    </div>
-    <div class="actions" id="message_modal_actions">
-      <div class="ui button">Cancel</div>
-      <div class="ui button">OK</div>
-    </div>
-  </div>
-  <!--- UI Confirmation Modal-->
-  <div class="ui basic modal" id="confirmation_modal">
-    <div class="ui icon header" id="confirmation_modal_header">
-      <i class="archive icon"></i>
-    </div>
-    <div class="content" id="confirmation_modal_content">
-      <p></p>
-    </div>
-    <div class="actions" id="confirmation_modal_actions">
-      <div class="ui red basic cancel inverted button">
-        <i class="remove icon"></i> No
-      </div>
-      <div class="ui green ok inverted button">
-        <i class="checkmark icon"></i> Yes
-      </div>
-    </div>
-  </div>
-  <!--- UI Confirmation Modal-->
+
+
+
 </body>
 
 </html>

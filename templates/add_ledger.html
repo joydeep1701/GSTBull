@@ -11,42 +11,59 @@
   <div class="ui horizontal divider">
    Create New
  </div>
-  <form class="ui form" action="index.html" method="post">
-    <div class="ui two column grid">
-      <div class="eight wide column">
+  <form class="ui form" action="index.html" method="post" onsubmit="return check();">
+    <div class="ui grid">
 
-        <div class="field">
-          <label>Ledger Name</label>
-          <input type="text" name="ledger_name" value="" placeholder="Ledger Name">
+        <div class="eight wide column">
+          <div class="field">
+            <label>Ledger Name</label>
+            <input type="text" name="ledger_name" value="" placeholder="Ledger Name">
+          </div>
+          <div class="field">
+            <label>GSTIN</label>
+            <input type="text" name="gstin" value="" placeholder="GSTIN (if any)" >
+            <div class="ui pointing red basic label">
+              GSTIN Mismatch
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label>GSTIN</label>
-          <input type="text" name="gstin" value="" placeholder="GSTIN (if any)" >
-        </div>
-      </div>
 
-      <div class="four wide grid"></div>
-      <div class="four wide grid">
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" name="sez" value="True">
-            <label>Special Economic Zone</label>
+        <div class="four wide column">
+          <div class="field">
+            <label>Place</label>
+            {% include 'state_name_select.html' %}
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="sez" value="True">
+              <label>Special Economic Zone</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="sez" value="True">
+              <label>Composition Scheme</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="sez" value="True">
+              <label>Un-registered Dealer</label>
+            </div>
           </div>
         </div>
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" name="sez" value="True">
-            <label>Composition Scheme</label>
+      <div class="row">
+        <div class="eight wide column">
+          <div class="field">
+            <button class="ui primary button"> Save </button>
           </div>
         </div>
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" name="sez" value="True">
-            <label>Un-registered Dealer</label>
-          </div>
-        </div>
+
+
       </div>
     </div>
+
+
 
   </form>
 
