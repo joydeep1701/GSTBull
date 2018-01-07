@@ -17,7 +17,9 @@
     <div class="two fields">
       <div class="field">
         <label>Ledger Name</label>
-        <input type="text" name="" value="">
+        <div class="ui search" id="ledger_input">
+          <input class="prompt" type="text" name="" value="" placeholder="Ledger Name">
+        </div>
       </div>
       <div class="field">
         <label>Invoice No</label>
@@ -36,74 +38,99 @@
   </div>
 
   <div class="field">
-    <table class="ui celled padded table">
-      <thead>
-        <tr>
-          <th>Tax Rate</th>
-          <th>Amount</th>
-          <th>Tax</th>
-          <th>Amount With Tax</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <select class="ui fluid dropdown" name="rate">
-              <option value="">Taxrate</option>
-              <option value="0">0</option>
-              <option value="10">10</option>
-            </select>
-          </td>
-          <td>
-            <input type="text" name="" value="">
-          </td>
-          <td>
-            <input type="text" name="" value="">
-          </td>
-          <td>
-            <input type="text" name="" value="">
-          </td>
-          <td>
-            <div class="ui orange label">
-              <i class="trash icon"></i>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>
-            <button type="button" class="ui teal button"><i class="plus icon"></i></button>
-          </th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <th>
-          </th>
-          <th>
-            <div class="ui right labeled input">
-              <div class="ui label"><i class="minus icon"></i></div>
-                <input type="text" name="" value="" style="width:100px">
-              <div class="ui yellow label"><i class="plus icon"></i></div>
-            </div>
-          </th>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <th>Invoice Value:</th>
-          <th></th>
-          <td></td>
-        </tr>
-      </tfoot>
-    </table>
+    <div class="ui grid">
+      <div class="twelve wide column">
+        <table class="ui celled padded table">
+          <thead>
+            <tr>
+              <th>Tax Rate</th>
+              <th>Amount</th>
+              <th>Tax</th>
+              <th>Amount With Tax</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody id="table_tbody">
+            <tr>
+              <td>
+                <select class="ui fluid dropdown" name="rate">
+                  <option value="">Taxrate</option>
+                  {% for rate in taxrates %}
+                  <option value="{{rate.taxrate}}">{{rate.display}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <input type="text" name="" value="">
+              </td>
+              <td>
+                <input type="text" name="" value="">
+              </td>
+              <td>
+                <input type="text" name="" value="">
+              </td>
+              <td>
+                <div class="ui orange label">
+                  <i class="trash icon"></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>
+                <button type="button" class="ui teal button" onclick="addrows()">
+                  <i class="plus icon"></i>
+                </button>
+              </th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <th class="right aligned">
+                Roundoff:
+              </th>
+              <th>
+                <div class="ui right labeled input">
+                  <div class="ui label"><i class="minus icon"></i></div>
+                  <input type="text" name="" value="" style="width:100px">
+                  <div class="ui yellow label"><i class="plus icon"></i></div>
+                </div>
+              </th>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <th class="right aligned">Invoice Value:</th>
+              <th></th>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="four wide column">
+        <div class="ui raised segment">
+          <a class="ui red ribbon label">Overview</a>
+          <div id="ledger_overview">
+
+          </div>
+          <div class="ui divider"></div>
+
+          <a class="ui blue ribbon label">Voucher</a>
+
+          <p><b>CGST: </b>124.00
+            <br>
+            <b>SGST: </b> 124.00
+          </p>
+        </div>
+      </div>
+    </div>
+
   </div>
   <br>
   <div class="ui field">
@@ -114,6 +141,132 @@
 
 <br/>
 <script type="text/javascript">
+  function addrows() {
+    var table = document.getElementById('table_tbody');
+    var row = table.insertRow(-1);
+    row.insertCell(0).innerHTML = `<select class="ui fluid dropdown" name="rate">
+
+                                      {% for rate in taxrates %}
+                                      <option value="{{rate.taxrate}}">
+                                        {{rate.display}}
+                                      </option>
+                                      {% endfor %}
+                                    </select>`
+    row.insertCell(1).innerHTML = `<input type="text" name="" value="">`
+    row.insertCell(2).innerHTML = `<input type="text" name="" value="">`
+    row.insertCell(3).innerHTML = `<input type="text" name="" value="">`
+    row.insertCell(4).innerHTML = `<div class="ui orange label">
+                                      <i class="trash icon"></i>
+                                    </div>`
+  }
+/*
+  function ledger_search(keyword) {
+    if(keyword == '')
+      return
+    $('#message_modal').modal('show')
+
+    var headers = new Headers();
+    var init = {
+      method: 'GET',
+      headers: headers,
+      mode: 'cors',
+      credentials: 'same-origin',
+    };
+    fetch('/ledger/search/' + keyword, init).then(function(response) {
+      if(response.ok) {
+        return response.json();
+      }
+    }).then(function(json_data) {
+
+
+      console.log(json_data);
+
+    });
+  }*/
+  $(document).ready(function() {
+    $('#ledger_input').search({
+      type          : 'category',
+      minCharacters : 1,
+      onSelect      : function(result, response) {updateLedgerInfo(result);},
+      apiSettings   : {
+        onResponse : function(jsonResponse) {
+          var response = {
+            results : {
+              'Registered':{
+                name   : 'Registered',
+                results: []
+              },
+              'Unregistered':{
+                name   : 'Unregistered',
+                results: []
+              },
+              'SEZ':{
+                name   : 'SEZ',
+                results: []
+              },
+              'Composition':{
+                name   : 'Composition',
+                results: []
+              },
+            }
+          };
+          var maxResults = 5;
+          $.each(jsonResponse, function(index, item) {
+            if(index >= maxResults) {
+              return false;
+            }
+            //console.log(item);
+            var temp = {
+              title       : item.name,
+              description : item.unregistered === 'False'?item.gstin:item.place_of_supply,
+              url         : '#',
+              registered  : item.unregistered === 'False',
+              composition : item.composition === 'True',
+              sez         : item.sez === 'True',
+              pos         : item.place_of_supply
+            };
+            if(item.unregistered === 'True') {
+              response.results['Unregistered'].results.push(temp);
+            } else if (item.composition === 'True') {
+              response.results['Composition'].results.push(temp);
+            } else if (item.sez === 'True') {
+              response.results['SEZ'].results.push(temp);
+            }
+            else {
+              response.results['Registered'].results.push(temp);
+            }
+          });
+
+          //console.log(response);
+          return response;
+        },
+        url: '/ledger/search/{query}'
+      }
+    });
+  });
+  var supply_type = "";
+  function updateLedgerInfo(data) {
+    var innerHTML = ""
+    if(!data.registered) {
+      innerHTML += `<p class="ui tag label">Unregistered</p>`
+    }
+    else {
+      innerHTML += `<p><b>GSTIN: </b>${data.description}</p>`
+      if(data.sez) {
+        innerHTML += `<p class="ui tag label">Special Economic Zone</p>`
+      }
+      if(data.composition) {
+        innerHTML += `<p class="ui tag label">Composition Scheme</p>`
+      }
+    }
+    supply_type = data.pos == '19'?'Intra':'Inter';
+    innerHTML += `<p></p>
+                  <p><b>POS: </b>${statecodes[data.pos]}</p>
+                  <p><b>Supply Type: </b>${supply_type}-State</p>`
+    //console.log(innerHTML);
+    document.getElementById('ledger_overview').innerHTML = innerHTML;
+    //console.log(data);
+  }
   var today = new Date();
   var date = new Date(today.getFullYear(), today.getMonth() - 1, 1)
   document.getElementsByName('date')[0].value = date;
@@ -123,5 +276,17 @@
       type: 'date'
     });
   });
+  var statecodes = {}
+  fetch('/statecodes').then(function(response) {
+    if(response.ok) {
+      return response.json();
+    }
+  }).then(function(ret) {
+      //console.log(ret);
+      statecodes = ret;
+  });
+
+
+
 </script>
 {% endblock%}

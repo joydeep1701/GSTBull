@@ -6,7 +6,7 @@ from helper import *
 from sql import *
 import authenticator
 import ledgers
-
+import vouchers
 
 app = Flask(__name__)
 app.config["SESSION_FILE_DIR"] = gettempdir()
@@ -14,6 +14,10 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 db = SQL("sqlite:///watchdog.db")
+
+@app.route('/statecodes')
+def dumpstatecodes():
+    return json.dumps(state_codes)
 
 @app.route('/ledger/add', methods=['GET','POST'])
 @login_required
@@ -42,7 +46,8 @@ def editledger(name):
 @app.route('/sales/add', methods=['GET','POST'])
 @login_required
 def addsales():
-    return render_template('add_sales.html')
+    return render_template('add_sales.html',
+            taxrates=vouchers.getTaxrates())
 
 
 

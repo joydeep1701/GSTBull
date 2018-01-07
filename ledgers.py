@@ -6,7 +6,7 @@ db = SQL("sqlite:///watchdog.db")
 def create(request, company_id):
     issez = str(request.get('sez') is not None)
     isur = str(request.get('ur') is not None)
-    iscmp = str(request.get('cmp') is not None)
+    iscmp = str(request.get('comp') is not None)
 
     table_name = str(company_id) + '_ledgers'
     similar_named_co = db.execute("""SELECT * FROM :table WHERE

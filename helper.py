@@ -13,6 +13,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
 state_codes = {"35":"35-Andaman and Nicobar Islands","37":"37-Andhra Pradesh",
 "12":"12-Arunachal Pradesh","18":"18-Assam","10":"10-Bihar","04":"04-Chandigarh",
 "22":"22-Chhattisgarh","26":"26-Dadra and Nagar Haveli","25":"25-Daman and Diu",
