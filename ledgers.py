@@ -35,3 +35,9 @@ def search(s, company_id):
     rows = db.execute("""SELECT * FROM :table WHERE name LIKE :search""",
                     table=table_name,search=search)
     return rows
+def getLedgerById(ledger_id, company_id):
+    table_name = str(company_id) + '_ledgers'
+    search = ledger_id
+    rows = db.execute("""SELECT * FROM :table WHERE id=:search""",
+                    table=table_name,search=search)
+    return rows

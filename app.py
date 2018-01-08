@@ -33,6 +33,11 @@ def addledger():
 def searchledger(s):
     return json.dumps(ledgers.search(s, session['company_id']))
 
+@app.route('/ledger/data/<ledger_id>')
+@login_required
+def getledgerdata(ledger_id):
+    return json.dumps(ledgers.getLedgerById(ledger_id, session['company_id'])[0])
+
 @app.route('/ledger/edit/<name>', methods=['GET','POST'])
 @login_required
 def editledger(name):
@@ -46,10 +51,23 @@ def editledger(name):
 @app.route('/sales/add', methods=['GET','POST'])
 @login_required
 def addsales():
-    return render_template('add_sales.html',
+    if request.method == 'POST':
+        vouchers.createSalesVoucher((request.form), session['company_id'])
+        #return str(dict(request.form))
+    return render_template('add_voucher.html',voucher_type='Sales',
             taxrates=vouchers.getTaxrates())
-
-
+@app.route('/purchase/add', methods=['GET','POST'])
+@login_required
+def addpurchase():
+    if request.method == 'POST':
+        vouchers.createSalesVoucher((request.form), session['company_id'])
+        return str(dict(request.form))
+    return render_template('add_voucher.html',voucher_type='Purchase',
+            taxrates=vouchers.getTaxrates())
+@app.route('/sales/data/<inv_no>')
+@login_required
+def getsalesvoucherdata(inv_no):
+    return json.dumps(vouchers.getSalesVoucherByInvNo(inv_no, session['company_id']))
 
 @app.route('/')
 @login_required
@@ -68,9 +86,9 @@ def login():
 
         return redirect(url_for('login'))
 
-@app.route('/gstr3b')
+@app.route('/gstr3b/<m>')
 @login_required
-def gstr3b():
+def gstr3b(m):
     return render_template('gstr3b.html')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
