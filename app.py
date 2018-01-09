@@ -60,7 +60,7 @@ def addsales():
 @app.route('/sales/view')
 @login_required
 def viewsales():
-    return render_template('search_sales_voucher.html')
+    return render_template('search_voucher.html',view_type='sales')
 
 @app.route('/sales/search/bymonth/<year>/<month>')
 @login_required
@@ -78,15 +78,38 @@ def deletesales(id):
     vouchers.deleteSalesVoucher(id,  session['company_id'])
     return json.dumps({'status':'ok'})
 
-
 @app.route('/purchase/add', methods=['GET','POST'])
 @login_required
 def addpurchase():
     if request.method == 'POST':
-        vouchers.createSalesVoucher((request.form), session['company_id'])
-        return str(dict(request.form))
+        vouchers.createPurchaseVoucher((request.form), session['company_id'])
+        #return str(dict(request.form))
     return render_template('add_voucher.html',voucher_type='Purchase',
             taxrates=vouchers.getTaxrates())
+
+@app.route('/purchase/view')
+@login_required
+def viewpurchase():
+    return render_template('search_voucher.html',view_type='purchase')
+
+@app.route('/purchase/search/bymonth/<year>/<month>')
+@login_required
+def searchpurchasebymonth(month,year):
+    return json.dumps(vouchers.getPurchaseVoucherByMonth(month, year, session['company_id']))
+
+@app.route('/purchase/search/byinv/<inv_no>')
+@login_required
+def getpurchasevoucherdata(inv_no):
+    return json.dumps(vouchers.getPurchaseVoucherByInvNo(inv_no, session['company_id']))
+
+@app.route('/purchase/delete/<id>')
+@login_required
+def deletepurchase(id):
+    vouchers.deletePurchaseVoucher(id,  session['company_id'])
+    return json.dumps({'status':'ok'})
+
+
+
 
 
 @app.route('/')

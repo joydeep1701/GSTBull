@@ -18,13 +18,13 @@
         },
       },
       onChange: function(date, text, mode) {
-        getSalesData(text);
+        getVoucherData(text);
         //console.log(date, text, mode);
       }
     });
   });
 
-  function getSalesData(text) {
+  function getVoucherData(text) {
     if(!text) {
       return
     }
@@ -39,17 +39,17 @@
       mode: 'cors',
       credentials: 'same-origin',
     };
-    fetch('/sales/search/bymonth/' + year + '/' + month, init).then(function(response) {
+    fetch('/{{view_type}}/search/bymonth/' + year + '/' + month, init).then(function(response) {
       if (response.ok) {
         return response.json();
       }
     }).then(function(json_data) {
-      updateSalesData(json_data)
+      updateVoucherData(json_data)
       //console.log(json_data);
     });
   }
 
-  function updateSalesData(json_data) {
+  function updateVoucherData(json_data) {
     var data = "";
     var filters = []
     for(let i = 0; i < document.getElementsByName('display_filter')[0].options.length; i++) {
@@ -122,7 +122,7 @@
       mode: 'cors',
       credentials: 'same-origin',
     };
-    fetch('/sales/search/byinv/'+inv_no, init).then(function(response) {
+    fetch('/{{view_type}}/search/byinv/'+inv_no, init).then(function(response) {
       if (response.ok) {
         return response.json();
       }
@@ -131,7 +131,7 @@
     });
   }
   function viewVoucher(json_data) {
-    document.getElementById('message_modal_header').innerHTML = "Sales Voucher";
+    document.getElementById('message_modal_header').innerHTML = "View Voucher";
     innerHTML = `
       <div class="ui container">
       <table class="ui padded table">
@@ -236,10 +236,10 @@
       mode: 'cors',
       credentials: 'same-origin',
     };
-    fetch('/sales/delete/'+master_id, init).then(function(response) {
+    fetch('/{{view_type}}/delete/'+master_id, init).then(function(response) {
       if (response.ok) {
         var text = document.getElementsByName('date')[0].value
-        getSalesData(text)
+        getVoucherData(text)
         return response.json();
       }
     }).then(function(json_data) {
@@ -249,16 +249,3 @@
     });
 
   }
-
-  var statecodes = {}
-  function updateStateCodes() {
-    fetch('/statecodes').then(function(response) {
-      if (response.ok) {
-        return response.json();
-      }
-    }).then(function(ret) {
-      //console.log(ret);
-      statecodes = ret;
-    });
-  }
-  updateStateCodes();

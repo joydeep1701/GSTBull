@@ -317,15 +317,3 @@ $(document).ready(function() {
     }
   });
 });
-var statecodes = {}
-function updateStateCodes() {
-  fetch('/statecodes').then(function(response) {
-    if (response.ok) {
-      return response.json();
-    }
-  }).then(function(ret) {
-    //console.log(ret);
-    statecodes = ret;
-  });
-}
-updateStateCodes();
