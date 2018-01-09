@@ -60,7 +60,7 @@ def addsales():
 @app.route('/sales/view')
 @login_required
 def viewsales():
-    return render_template('search_sales_ledger.html')
+    return render_template('search_sales_voucher.html')
 
 @app.route('/sales/search/bymonth/<year>/<month>')
 @login_required

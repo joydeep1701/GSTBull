@@ -1,0 +1,39 @@
+{% extends 'layout.html' %} {% block main %}
+<div class="ui container">
+  <div class="ui top attached header">
+    <div class="ui grid">
+      <div class="four wide column">
+        <div class="field">
+          <label>Select Month:  </label>
+          <div class="ui calendar" id="datepicker" style="width:200px">
+            <div class="ui input left icon">
+              <i class="calendar icon"></i>
+              <input type="text" required placeholder="Month" name="date" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="eleven wide column">
+        <label>Display:</label>
+        <select name="display_filter" multiple="" class="ui fluid dropdown"
+          onchange="getSalesData(document.getElementsByName('date')[0].value)">
+            <option value="r" selected>Registered</option>
+            <option value="ur" selected>Unregistered</option>
+            <option value="s" selected>SEZ</option>
+            <option value="c" selected>Composition</option>
+            <option value="hs" selected>Home State</option>
+            <option value="os" selected>Other State</option>
+          </select>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="ui attached segment" id="content">
+
+  </div>
+</div>
+<script type="text/javascript">
+{% include 'search_sales_voucher.js' %}
+</script>
+{% endblock %}
