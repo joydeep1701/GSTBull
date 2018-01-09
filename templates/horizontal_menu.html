@@ -6,14 +6,12 @@
       GSTBull
     {% endif %}
   </a> {% if session.company_id %}
-  <a class="ui dropdown item">
-      <i class="sidebar icon"></i>Options
-      <i class="dropdown icon"></i>
       <div class="menu">
         <div class="ui dropdown item">
           <span class="text">Ledgers</span>
           <div class="menu">
-            <div class="item">Add New Ledger</div>
+              <a href="{{url_for('addledger')}}" class="item">Add New Ledger</a>
+
             <div class="item">Display All</div>
             <div class="item">Summary</div>
           </div>
@@ -21,7 +19,7 @@
         <div class="ui dropdown item">
           <span class="text">Purchase</span>
           <div class="menu">
-            <div class="item">New Purchase Voucher</div>
+            <a href="{{url_for('addpurchase')}}" class="item">New Purchase Voucher</a>
             <div class="item">Display All</div>
             <div class="item">Summary</div>
           </div>
@@ -29,8 +27,8 @@
         <div class="ui dropdown item">
           <span class="text">Sales</span>
           <div class="menu">
-            <div class="item">New Sales Voucher</div>
-            <div class="item">Display All</div>
+            <a href="{{url_for('addsales')}}" class="item">New Sales Voucher</a>
+            <a href="{{url_for('viewsales')}}" class="item">View Sales Voucher</a>
             <div class="item">Summary</div>
           </div>
         </div>
@@ -44,7 +42,7 @@
         </div>
         <div class="item">GST Returns</div>
       </div>
-    </a>
+
    {% endif %}
   <div class="right menu">
     {% if session.company_id %}
