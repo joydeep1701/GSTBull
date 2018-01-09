@@ -13,6 +13,18 @@
           </div>
         </div>
       </div>
+      <div class="eleven wide column">
+        <label>Display:</label>
+        <select name="display_filter" multiple="" class="ui fluid dropdown"
+          onchange="getSalesData(document.getElementsByName('date')[0].value)">
+            <option value="r" selected>Registered</option>
+            <option value="ur" selected>Unregistered</option>
+            <option value="s" selected>SEZ</option>
+            <option value="c" selected>Composition</option>
+            <option value="hs" selected>Home State</option>
+            <option value="os" selected>Other State</option>
+          </select>
+      </div>
 
     </div>
 
@@ -49,6 +61,9 @@
   });
 
   function getSalesData(text) {
+    if(!text) {
+      return
+    }
     var target = text.split("-");
     var month = target[0];
     var year = target[1];
@@ -72,7 +87,31 @@
 
   function updateSalesData(json_data) {
     var data = "";
+    var filters = []
+    for(let i = 0; i < document.getElementsByName('display_filter')[0].options.length; i++) {
+	    filters[document.getElementsByName('display_filter')[0].options[i].value] = document.getElementsByName('display_filter')[0].options[i].selected
+    }
+    console.log(filters);
+
     for (var i = 0; i < json_data.length; i++) {
+      if(!filters.c && json_data[i].comp === "True") {
+        continue;
+      }
+      if(!filters.s && json_data[i].sez === "True") {
+        continue;
+      }
+      if(!filters.r && json_data[i].un_reg === "False") {
+        continue;
+      }
+      if(!filters.ur && json_data[i].un_reg === "True") {
+        continue;
+      }
+      if(!filters.hs && json_data[i].pos === "19") {
+        continue;
+      }
+      if(!filters.os && json_data[i].pos !== "19") {
+        continue;
+      }
       data += `<tr>
         <td>${json_data[i].name}</td>
         <td>${json_data[i].inv_no}</td>

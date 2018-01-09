@@ -17,14 +17,16 @@ def getSalesVoucherByInvNo(inv_no, company_id):
             WHERE inv_no = :inv_no""",
             table=master_table,ledger_table=ledger_table,inv_no=inv_no)
 
-    master_id = rows[0]['id']
-    secondary_data = db.execute("""SELECT * FROM :table WHERE master_id=:master_id""",
-                    table=secondary_table, master_id=master_id)
+    if rows:
+        master_id = rows[0]['id']
+        secondary_data = db.execute("""SELECT * FROM :table WHERE master_id=:master_id""",
+                        table=secondary_table, master_id=master_id)
 
-    voucher_data = dict(rows[0])
-    voucher_data['tax_data'] = secondary_data
+        voucher_data = dict(rows[0])
+        voucher_data['tax_data'] = secondary_data
 
-    return voucher_data
+        return voucher_data
+    return []
 
 def getSalesVoucherByMonth(month, year, company_id):
     view_table = str(company_id) + '_sales_view'
