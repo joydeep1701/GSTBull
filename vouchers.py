@@ -9,10 +9,32 @@ def getTaxrates():
 
 def getSalesVoucherByInvNo(inv_no, company_id):
     master_table = str(company_id) + '_master_sales'
-    rows = db.execute("""SELECT * FROM :table WHERE inv_no = :inv_no""",
-                table=master_table,inv_no=inv_no)
-    return rows
+    secondary_table = str(company_id) + '_secondary_sales'
+    ledger_table = str(company_id) + '_ledgers'
 
+    rows = db.execute("""SELECT * FROM :table
+            INNER JOIN (SELECT id AS l_id,name,gstin FROM :ledger_table) ON l_id=ledger_id
+            WHERE inv_no = :inv_no""",
+            table=master_table,ledger_table=ledger_table,inv_no=inv_no)
+
+    master_id = rows[0]['id']
+    secondary_data = db.execute("""SELECT * FROM :table WHERE master_id=:master_id""",
+                    table=secondary_table, master_id=master_id)
+
+    voucher_data = dict(rows[0])
+    voucher_data['tax_data'] = secondary_data
+
+    return voucher_data
+
+def getSalesVoucherByMonth(month, year, company_id):
+    view_table = str(company_id) + '_sales_view'
+    ledger_table = str(company_id) + '_ledgers'
+    rows = db.execute("""SELECT * FROM :table
+            INNER JOIN (SELECT id AS l_id,name FROM :ledger_table) ON l_id=ledger_id
+            WHERE month=:month AND year=:year GROUP BY master_id
+            ORDER BY inv_no ASC""", table=view_table,ledger_table=ledger_table,
+            month=month, year=year)
+    return rows
 def createSalesVoucher(request, company_id):
     master_table = str(company_id) + '_master_sales'
     secondary_table = str(company_id) + '_secondary_sales'
@@ -59,3 +81,11 @@ def createSalesVoucher(request, company_id):
             (master_id, rate, amount) VALUES (:master_id, :rate, :amount)
         """,table=secondary_table,master_id=row_id,rate=rate,amount=amount)
     flash('Invoice Added','yellow')
+def deleteSalesVoucher(voucher_id, company_id):
+    master_table = str(company_id) + '_master_sales'
+    secondary_table = str(company_id) + '_secondary_sales'
+
+    db.execute("""DELETE FROM :table WHERE id=:id""",table=master_table,
+        id=voucher_id)
+    db.execute("""DELETE FROM :table WHERE master_id=:id""",table= secondary_table,
+        id=voucher_id)

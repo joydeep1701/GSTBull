@@ -56,6 +56,29 @@ def addsales():
         #return str(dict(request.form))
     return render_template('add_voucher.html',voucher_type='Sales',
             taxrates=vouchers.getTaxrates())
+
+@app.route('/sales/view')
+@login_required
+def viewsales():
+    return render_template('search_sales_ledger.html')
+
+@app.route('/sales/search/bymonth/<year>/<month>')
+@login_required
+def searchsalesbymonth(month,year):
+    return json.dumps(vouchers.getSalesVoucherByMonth(month, year, session['company_id']))
+
+@app.route('/sales/search/byinv/<inv_no>')
+@login_required
+def getsalesvoucherdata(inv_no):
+    return json.dumps(vouchers.getSalesVoucherByInvNo(inv_no, session['company_id']))
+
+@app.route('/sales/delete/<id>')
+@login_required
+def deletesales(id):
+    vouchers.deleteSalesVoucher(id,  session['company_id'])
+    return json.dumps({'status':'ok'})
+
+
 @app.route('/purchase/add', methods=['GET','POST'])
 @login_required
 def addpurchase():
@@ -64,10 +87,7 @@ def addpurchase():
         return str(dict(request.form))
     return render_template('add_voucher.html',voucher_type='Purchase',
             taxrates=vouchers.getTaxrates())
-@app.route('/sales/data/<inv_no>')
-@login_required
-def getsalesvoucherdata(inv_no):
-    return json.dumps(vouchers.getSalesVoucherByInvNo(inv_no, session['company_id']))
+
 
 @app.route('/')
 @login_required
