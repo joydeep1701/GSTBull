@@ -4,6 +4,7 @@ document.getElementsByClassName('sidebar')[0].classList.toggle('visible')
 document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
 </script>
 <h3>GSTR-3b-month</h3>
+{{data}}
 <div class="ui container">
   <div class="ui top attached segment">
     <div class="ui top attached label">
@@ -22,38 +23,38 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       <tbody>
         <tr>
           <td>(a) Outward taxable supplies (other than zero rated, nil rated and exempted)</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td> {{"%0.2f"%(data.table3_1.row_a.taxable_value)}} </td>
+          <td> {{"%0.2f"%(data.table3_1.row_a.igst)}} </td>
+          <td> {{"%0.2f"%(data.table3_1.row_a.cgst)}} </td>
+          <td> {{"%0.2f"%(data.table3_1.row_a.sgst)}} </td>
         </tr>
         <tr>
           <td>(b) Outward taxable supplies (zero rated )</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td> {{"%0.2f"%(data.table3_1.row_b.taxable_value)}} </td>
+          <td> {{"%0.2f"%(data.table3_1.row_b.igst)}} </td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(c) Other outward supplies (Nil rated, exempted)</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td> {{"%0.2f"%(data.table3_1.row_c.taxable_value)}} </td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(d) Inward supplies (liable to reverse charge)</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(e) Non-GST outward supplies</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
       </tbody>
     </table>
@@ -76,11 +77,13 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
         </tr>
       </thead>
       <tbody>
+        {% for row in data.table3_2.row_ur %}
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td> {{ row.pos }}</td>
+          <td> {{"%0.2f"%(row.taxable_value) }} </td>
+          <td> {{"%0.2f"%(row.igst) }} </td>
         </tr>
+        {% endfor %}
       </tbody>
     </table>
     <table class="ui celled padded table">
@@ -95,11 +98,13 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
         </tr>
       </thead>
       <tbody>
+        {% for row in data.table3_2.row_cmp %}
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td> {{ row.pos }}</td>
+          <td> {{"%0.2f"%(row.taxable_value) }} </td>
+          <td> {{"%0.2f"%(row.igst) }} </td>
         </tr>
+        {% endfor %}
       </tbody>
     </table>
     <table class="ui celled padded table">
@@ -115,9 +120,9 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       </thead>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
       </tbody>
     </table>
@@ -144,33 +149,33 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
         </tr>
         <tr>
           <td>(1) Import of goods</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(2) Import of services</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(3) Inward supplies liable to reverse charge (other than 1, 2 above)</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(4) Inward supplies from ISD</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>(5) All other ITC</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table4.igst)}}</td>
+          <td>{{"%0.2f"%(data.table4.cgst)}}</td>
+          <td>{{"%0.2f"%(data.table4.sgst)}}</td>
         </tr>
       </tbody>
     </table>
@@ -193,13 +198,13 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       <tbody>
         <tr>
           <td>From a supplier under composition scheme, Exempt and Nil rated supply </td>
-          <td></td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table5.inter_state_value)}}</td>
+          <td>{{"%0.2f"%(data.table5.intra_state_value)}}</td>
         </tr>
         <tr>
           <td>Non GST supply</td>
-          <td></td>
-          <td></td>
+          <td>--</td>
+          <td>--</td>
         </tr>
       </tbody>
     </table>
@@ -210,6 +215,7 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
     <div class="ui top attached label">
       <p>6. Payment of tax</p>
     </div>
+
     <table class="ui celled padded table">
       <thead>
         <tr>
@@ -219,14 +225,14 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
           <th>Central Tax</th>
           <th>State/UT Tax</th>
           <th>CESS</th>
-          <th>Tax/Cess Paid in cash </th>
+          <th>Tax/Cess Payable in cash </th>
         </tr>
 
       </thead>
       <tbody>
         <tr>
           <td>Integrated Tax</td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table3_1.row_a.igst + data.table3_1.row_b.igst)}}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -235,7 +241,7 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
         </tr>
         <tr>
           <td>Central Tax</td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table3_1.row_a.cgst)}}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -244,7 +250,7 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
         </tr>
         <tr>
           <td>State/UT Tax</td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table3_1.row_a.sgst)}}</td>
           <td></td>
           <td></td>
           <td></td>

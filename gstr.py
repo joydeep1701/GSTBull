@@ -1,0 +1,122 @@
+from flask import redirect, render_template, request, url_for, flash
+from sql import *
+import ledgers
+import vouchers
+
+db = SQL("sqlite:///watchdog.db")
+
+class GSTR3b():
+    def __init__(self, month, year, company_id):
+        self.company_id = company_id
+        self.month = month
+        self.year = year
+        self.sales_view = str(company_id) + '_sales_view'
+        self.sales_master = str(company_id) + '_master_sales'
+        self.sales_secondary = str(company_id) + '_secondary_sales'
+        self.purchase_view = str(company_id) + '_purchase_view'
+        self.purchase_master = str(company_id) + '_master_purchase'
+        self.purchase_secondary = str(company_id) + '_secondary_purchase'
+        self.ledger_table = str(company_id) + '_ledgers'
+
+
+    def table3_1(self):
+        data = {}
+        rowa_hs = db.execute("""SELECT sum(rate_amount) AS taxable_value,
+                    sum(rate_amount*rate/2) AS cgst, sum(rate_amount*rate/2) AS sgst
+                    FROM :table
+                    WHERE sez='False' AND rate !='0.0'
+                    AND pos = :hs
+                    AND month=:month AND year=:year""",
+                    table=self.sales_view, month=self.month, year=self.year, hs=19)
+
+        rowa_os = db.execute("""SELECT sum(rate_amount) AS taxable_value,
+                    sum(rate_amount*rate) AS igst
+                    FROM :table
+                    WHERE sez='False' AND rate !='0.0'
+                    AND pos != :hs
+                    AND month=:month AND year=:year""",
+                    table=self.sales_view, month=self.month, year=self.year, hs=19)
+
+        data['row_a'] = {'taxable_value':rowa_os[0]['taxable_value'] + rowa_hs[0]['taxable_value'],
+                        'igst':rowa_os[0]['igst'],
+                        'cgst':rowa_hs[0]['cgst'],
+                        'sgst':rowa_hs[0]['sgst'],
+                        'hs':  rowa_hs[0],
+                        'os':  rowa_os[0]}
+
+
+
+        rowb = db.execute("""SELECT sum(rate_amount) AS taxable_value,
+                    sum(rate_amount*rate) AS igst FROM :table WHERE sez='True'
+                    AND month=:month AND year=:year""",
+                    table=self.sales_view, month=self.month, year=self.year)
+        data['row_b'] = rowb[0]
+        rowc = db.execute("""SELECT sum(rate_amount) AS taxable_value
+                        FROM :table WHERE sez='False' AND rate='0.0'
+                        AND month=:month AND year=:year""",
+                        table=self.sales_view, month=self.month, year=self.year)
+        data['row_c'] = rowc[0]
+        return data
+    def table3_2(self):
+        data = {}
+        row_ur = db.execute("""SELECT
+                    pos, sum(rate_amount) AS taxable_value,
+                    sum(rate_amount*rate) AS igst FROM :table
+                    WHERE pos != :hs
+                    AND un_reg='True' AND comp='False' AND sez='False'
+                    AND rate !='0.0'
+                    AND month=:month AND year=:year
+                    GROUP BY pos
+                    """,
+                    table=self.sales_view, month=self.month, year=self.year, hs=19)
+        data['row_ur'] = row_ur
+        row_cmp = db.execute("""SELECT
+                    pos, sum(rate_amount) AS taxable_value,
+                    sum(rate_amount*rate) AS igst FROM :table
+                    WHERE pos != :hs
+                    AND un_reg='False' AND comp='True' AND sez='False'
+                    AND rate !='0.0'
+                    AND month=:month AND year=:year
+                    GROUP BY pos
+                    """,
+                    table=self.sales_view, month=self.month, year=self.year, hs=19)
+        data['row_cmp'] = row_cmp
+        return data
+
+    def table4(self):
+        data = {}
+        row_5_os = db.execute("""SELECT sum(rate_amount*rate) AS igst
+                    FROM :table WHERE
+                    sez='False' AND comp='False' AND rate != '0.00' AND pos != :hs
+                    AND month=:month AND year=:year""",
+                    table=self.purchase_view, month=self.month, year=self.year, hs=19)
+        row_5_hs = db.execute("""SELECT sum(rate_amount*rate/2) AS cgst,
+                    sum(rate_amount*rate/2) AS sgst
+                    FROM :table WHERE
+                    sez='False' AND comp='False' AND rate != '0.00' AND pos = :hs
+                    AND month=:month AND year=:year""",
+                    table=self.purchase_view, month=self.month, year=self.year, hs=19)
+        data.update(row_5_os[0])
+        data.update(row_5_hs[0])
+        return data
+    def table5(self):
+        data = {}
+        row_hs = db.execute("""SELECT sum(rate_amount) AS intra_state_value
+                    FROM :table WHERE sez='False' AND pos=:hs
+                    AND (rate = '0.00' OR comp='True' )
+                    AND month=:month AND year=:year""",
+                    table=self.purchase_view, month=self.month, year=self.year, hs=19)
+        row_os = db.execute("""SELECT sum(rate_amount) AS inter_state_value
+                    FROM :table WHERE sez='False' AND pos!=:hs
+                    AND (rate = '0.00' OR comp='True' )
+                    AND month=:month AND year=:year""",
+                    table=self.purchase_view, month=self.month, year=self.year, hs=19)
+        data.update(row_os[0])
+        data.update(row_hs[0])
+        return data
+    def getData(self):
+        data = {'table3_1':self.table3_1(),
+                'table3_2':self.table3_2(),
+                'table4'  :self.table4(),
+                'table5'  :self.table5(),}
+        return data

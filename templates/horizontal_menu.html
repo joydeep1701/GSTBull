@@ -46,12 +46,6 @@
    {% endif %}
   <div class="right menu">
     {% if session.company_id %}
-    <div class="item">
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="search link icon"></i>
-      </div>
-    </div>
     <a class="ui item" href="/login"><i class="sign out icon"></i> Sign Out</a> {% else %}
     <a class="ui item"><i class="cloud upload icon"></i> Backup</a> {% endif %}
   </div>

@@ -55,7 +55,11 @@
     for(let i = 0; i < document.getElementsByName('display_filter')[0].options.length; i++) {
 	    filters[document.getElementsByName('display_filter')[0].options[i].value] = document.getElementsByName('display_filter')[0].options[i].selected
     }
-    console.log(filters);
+    //console.log(filters);
+
+    let t_amt = 0.00
+    let t_tax = 0.00
+    let t_twa = 0.00
 
     for (var i = 0; i < json_data.length; i++) {
       if(!filters.c && json_data[i].comp === "True") {
@@ -64,7 +68,7 @@
       if(!filters.s && json_data[i].sez === "True") {
         continue;
       }
-      if(!filters.r && json_data[i].un_reg === "False") {
+      if(!filters.r && json_data[i].un_reg === "False" && json_data[i].comp === "False" && json_data[i].sez === "False") {
         continue;
       }
       if(!filters.ur && json_data[i].un_reg === "True") {
@@ -76,6 +80,10 @@
       if(!filters.os && json_data[i].pos !== "19") {
         continue;
       }
+      t_amt += parseFloat(json_data[i].invoice_taxable_value)
+      t_tax += parseFloat(json_data[i].invoice_tax)
+      t_twa += parseFloat(json_data[i].invoice_value)
+
       data += `<tr>
         <td>${json_data[i].name}</td>
         <td>${json_data[i].inv_no}</td>
@@ -108,21 +116,37 @@
           <tbody>
             ${data}
           </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>Total:</th>
+              <th>${t_amt.toFixed(2)}</th>
+              <th>${t_tax.toFixed(2)}</th>
+              <th>${t_twa.toFixed(2)}</th>
+              <th></th>
+            </tr>
+          </tfoot>
         </table>`
       if(json_data.length === 0) {
         innerHTML = `<div class="ui red center">No voucher found for given period.</div>`
       }
+
       document.getElementById('content').innerHTML = innerHTML;
   }
   function getVoucher(inv_no) {
     var headers = new Headers();
+    var fd = new FormData();
+    fd.append('inv_no',inv_no);
     var init = {
-      method: 'GET',
+      method: 'POST',
       headers: headers,
       mode: 'cors',
+      body: fd,
       credentials: 'same-origin',
     };
-    fetch('/{{view_type}}/search/byinv/'+inv_no, init).then(function(response) {
+    fetch('/{{view_type}}/search/byinv/', init).then(function(response) {
       if (response.ok) {
         return response.json();
       }
