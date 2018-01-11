@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+{% block main %}
+<script type="text/javascript">
+document.getElementsByClassName('sidebar')[0].classList.toggle('visible')
+document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
+</script>
+<h3>GSTR-1-month</h3>
+
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p>4A, 4B, 4C, 6B, 6C - B2B Invoices</p>
+    </div>
+    <p>Details of invoices of Taxable supplies made to other <b>registered</b> taxpayers</p>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>No. of Records</th>
+          <th>Total Invoice value</th>
+          <th>Total Taxable value</th>
+          <th>Total Intregrated Tax</th>
+          <th>Total Central Tax</th>
+          <th>Total State/UT Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>B2B Invoices - Reciever Wise Summary</p>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>Reciever Name</th>
+          <th>GSTIN</th>
+          <th>No. of Invoices</th>
+          <th>Total Taxable Value</th>
+          <th>Intregrated Tax</th>
+          <th>Central Tax</th>
+          <th>State Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+      </table
+  </div>
+</div>
+
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p>7 - B2C (Others)</p>
+    </div>
+    <p>Supplies made to consumers and unregistered persons of the following nature
+    <br>a) Intra-State: any value
+    <br>b) Inter-State: Invoice value Rs 2.5 lakh or less</p>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>No. of Records</th>
+          <th>Total Invoice value</th>
+          <th>Total Taxable value</th>
+          <th>Total Intregrated Tax</th>
+          <th>Total Central Tax</th>
+          <th>Total State/UT Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>B2CS - Details</p>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>POS</th>
+          <th>Rate</th>
+          <th>Total Taxable Value</th>
+          <th>Total Tax</th>
+        </tr>
+      </thead>
+    </table>
+
+  </div>
+</div>
+<div class="ui container">
+  <div class="ui top attached segment">
+    <div class="ui top attached label">
+      <p>8 - Nil rated, exempted and non GST outward supplies</p>
+    </div>
+    <p>Details of invoices of Taxable supplies made to other <b>registered</b> taxpayers</p>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>No. of Records</th>
+          <th>Total Nil amount</th>
+          <th>Total Excempted amount</th>
+          <th>Total non-GST amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Nil Rated Supplies</th>
+          <th>Exempted Supply</th>
+          <th>Non GST Supply</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Intra-state supplies to registered person</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Intra-state supplies to unregistered person</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Inter-state supplies to registered person</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Inter-state supplies to unregistered person	</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -136,9 +136,14 @@ def login():
 
         return redirect(url_for('login'))
 
-@app.route('/gstr3b/<y>/<m>')
+@app.route('/gstr1/<y>/<m>')
 @login_required
 def gstr3b(m,y):
+    return render_template('gstr1.html')
+
+@app.route('/gstr3b/<y>/<m>')
+@login_required
+def gstr1(m,y):
     form_3b = gstr.GSTR3b(m,y,session['company_id'])
     data = form_3b.getData()
     return render_template('gstr3b.html',data=data)
