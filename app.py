@@ -139,7 +139,9 @@ def login():
 @app.route('/gstr1/<y>/<m>')
 @login_required
 def gstr3b(m,y):
-    return render_template('gstr1.html')
+    form_1 = gstr.GSTR1(m, y, session['company_id'])
+    data = form_1.getData()
+    return render_template('gstr1.html',data=data)
 
 @app.route('/gstr3b/<y>/<m>')
 @login_required

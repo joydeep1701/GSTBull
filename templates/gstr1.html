@@ -25,12 +25,12 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       </thead>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{(data.b2b.summary.no_records)}}</td>
+          <td>{{"%0.2f"%(data.b2b.summary.invoice_value)}}</td>
+          <td>{{"%0.2f"%(data.b2b.summary.taxable_value)}}</td>
+          <td>{{"%0.2f"%(data.b2b.summary.igst)}}</td>
+          <td>{{"%0.2f"%(data.b2b.summary.cgst)}}</td>
+          <td>{{"%0.2f"%(data.b2b.summary.sgst)}}</td>
         </tr>
       </tbody>
     </table>
@@ -48,9 +48,27 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
         </tr>
       </thead>
       <tbody>
+        {% for row in data.b2b.reciever_wise %}
+        <tr>
+          <td>{{row.name}}</td>
+          <td>{{row.gstin}}</td>
+          <td>{{row.no_records}}</td>
+          <td>{{"%0.2f"%(row.taxable_value)}}</td>
+          {% if row.pos == '19' %}
+          <td>--</td>
+          <td>{{"%0.2f"%(row.tax/2)}}</td>
+          <td>{{"%0.2f"%(row.tax/2)}}</td>
+          {% else %}
+          <td>{{"%0.2f"%(row.tax)}}</td>
+          <td>--</td>
+          <td>--</td>
+          {% endif%}
+        </tr>
+        {% endfor %}
 
       </tbody>
-      </table
+    </table>
+    <a href="#" class="ui primary button"><i class="download icon"></i>Download</a>
   </div>
 </div>
 
@@ -75,12 +93,12 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       </thead>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{(data.b2b.summary.no_records)}}</td>
+          <td>{{"%0.2f"%(data.b2cs.summary.invoice_value)}}</td>
+          <td>{{"%0.2f"%(data.b2cs.summary.taxable_value)}}</td>
+          <td>{{"%0.2f"%(data.b2cs.summary.igst)}}</td>
+          <td>{{"%0.2f"%(data.b2cs.summary.cgst)}}</td>
+          <td>{{"%0.2f"%(data.b2cs.summary.sgst)}}</td>
         </tr>
       </tbody>
     </table>
@@ -94,6 +112,16 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
           <th>Total Tax</th>
         </tr>
       </thead>
+      <tbody>
+        {% for row in data.b2cs.details %}
+        <tr>
+          <td>{{row.pos}}</td>
+          <td>{{"%0.2f"%(row.rate*100)}}%</td>
+          <td>{{"%0.2f"%(row.taxable_value)}}</td>
+          <td>{{"%0.2f"%(row.tax)}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
 
   </div>
@@ -103,7 +131,6 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
     <div class="ui top attached label">
       <p>8 - Nil rated, exempted and non GST outward supplies</p>
     </div>
-    <p>Details of invoices of Taxable supplies made to other <b>registered</b> taxpayers</p>
     <table class="ui celled padded table">
       <thead>
         <tr>
@@ -115,12 +142,10 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       </thead>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{data.table_8.summary.no_records}}</td>
+          <td>{{"%0.2f"%(data.table_8.summary.taxable_value)}}</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
       </tbody>
     </table>
@@ -136,27 +161,27 @@ document.getElementsByClassName('sidebar')[1].classList.toggle('visible')
       <tbody>
         <tr>
           <td>Intra-state supplies to registered person</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table_8.details.nil_rated.hs_reg)}}</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>Intra-state supplies to unregistered person</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table_8.details.nil_rated.hs_unreg)}}</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>Inter-state supplies to registered person</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table_8.details.nil_rated.os_reg)}}</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
         <tr>
           <td>Inter-state supplies to unregistered person	</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{"%0.2f"%(data.table_8.details.nil_rated.os_unreg)}}</td>
+          <td>--</td>
+          <td>--</td>
         </tr>
       </tbody>
     </table>
