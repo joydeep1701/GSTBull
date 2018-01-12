@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
   <meta charset="utf-8" />
   <meta content="initial-scale=1, width=device-width" name="viewport" />
-
   <link rel="stylesheet" href="/static/semantic/semantic.css">
   <link rel="stylesheet" href="/static/semantic/calendar.css">
   <script src="/static/semantic/jquery-3.2.1.js"></script>
   <script src="/static/semantic/semantic.js"></script>
   <script src="/static/semantic/calendar.js"></script>
-
   <title>{% block title %}{% endblock %} | GSTBull</title>
   {% block head %} {% endblock %}
   <style>
@@ -33,14 +30,11 @@
     {% include 'state_code.js' %}
   </script>
 </head>
-
 <body>
   {% include 'dimmed_message.html' %}
-
   {% if session.company_id %}
     {% include 'vertical_bars.html' %}
   {% endif %}
-
   <div class="ui container">
     {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
     <header>
@@ -53,7 +47,6 @@
         {% endfor %}
         showMessage('', content);
       </script>
-
     </header>
     {% endif %} {% endwith %}
     <main>
@@ -65,7 +58,5 @@
   </div>
   {% include 'message_modal.html' %}
   {% include 'confirmation_modal.html' %}
-
 </body>
-
 </html>

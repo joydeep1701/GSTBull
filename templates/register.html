@@ -1,0 +1,28 @@
+{% extends 'layout.html'%}
+{% block main %}
+<form class="ui form" action="" method="post">
+  <div class="field">
+    <label>Company Name</label>
+    <input type="text" name="name" value="" placeholder="Company Name">
+  </div>
+  <div class="field">
+    <label>GSTIN</label>
+    <input type="text" name="gstin" value="" placeholder="GSTIN">
+  </div>
+  <div class="field">
+    <label>Dealer Name</label>
+    <input type="text" name="dealer" value="" placeholder="Dealer Name">
+  </div>
+  <div class="field">
+    <label>201706 Turnover</label>
+    <input type="text" name="turnover_q1" value="" placeholder="201706 Turnover">
+  </div>
+  <div class="field">
+    <label>2016-17 Turnover</label>
+    <input type="text" name="turnover_pfy" value="" placeholder="2016-17 Turnover">
+  </div>
+  <div class="field">
+    <button type="submit" class="ui green button" name="button">Create</button>
+  </div>
+</form>
+{% endblock %}

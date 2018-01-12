@@ -135,7 +135,12 @@ def login():
             return redirect(url_for('index'))
 
         return redirect(url_for('login'))
-
+@app.route('/register', methods=['GET','POST'])
+def register():
+    if request.method == 'POST':
+        authenticator.createCompany(request.form)
+        return 'Success'
+    return render_template('register.html')
 @app.route('/gstr1/<y>/<m>')
 @login_required
 def gstr3b(m,y):
