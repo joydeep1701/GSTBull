@@ -141,6 +141,7 @@ def login():
 def gstr3b(m,y):
     form_1 = gstr.GSTR1(m, y, session['company_id'])
     data = form_1.getData()
+    #return json.dumps(data)
     return render_template('gstr1.html',data=data)
 
 @app.route('/gstr3b/<y>/<m>')
@@ -148,6 +149,7 @@ def gstr3b(m,y):
 def gstr1(m,y):
     form_3b = gstr.GSTR3b(m,y,session['company_id'])
     data = form_3b.getData()
+    #return json.dumps(data)
     return render_template('gstr3b.html',data=data)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)

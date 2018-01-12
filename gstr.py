@@ -4,6 +4,15 @@ import ledgers
 import vouchers
 
 db = SQL("sqlite:///watchdog.db")
+
+def encode(value):
+    if value is None:
+        return 0.00
+    if isinstance(value, dict):
+        for key in value.keys():
+            value[key] = encode(value[key])
+    return value
+
 class GSTR1():
     def __init__(self, month, year, company_id):
         self.company_id = company_id
@@ -54,13 +63,14 @@ class GSTR1():
                                 GROUP BY master_id)
                             GROUP BY gstin""",table=self.sales_view, ledgers=self.ledger_table,
                             month=self.month, year=self.year)
-
+        #print(summary_count)
         data['summary'] = summary_count[0]
         data['summary']['igst'] = summary_tax_os[0]['igst']
         data['summary']['sgst'] = summary_tax_hs[0]['sgst']
         data['summary']['cgst'] = summary_tax_hs[0]['cgst']
         data['reciever_wise'] = reciever_wise
-        return data
+        #print(data)
+        return encode(data)
     def table_b2cs(self):
         data = {}
         summary_count = db.execute("""SELECT count(inv_no) AS no_records,
@@ -93,12 +103,14 @@ class GSTR1():
                         AND month=:month AND year=:year
                         GROUP BY pos,rate""",
                         table=self.sales_view, month=self.month, year=self.year)
+
         data['summary'] = summary_count[0]
         data['summary']['igst'] = summary_tax_os[0]['igst']
         data['summary']['sgst'] = summary_tax_hs[0]['sgst']
         data['summary']['cgst'] = summary_tax_hs[0]['cgst']
         data['details'] = details
-        return data
+
+        return encode(data)
 
     def table_8(self):
         data = {}
@@ -129,6 +141,7 @@ class GSTR1():
                     AND month=:month AND year=:year""",
                     table=self.sales_view, month=self.month, year=self.year, hs=19)
 
+
         data['summary'] = summary[0]
         data['details'] = {}
         data['details']['nil_rated'] = {'hs_reg':hs_reg[0]['taxable_value'],
@@ -136,7 +149,9 @@ class GSTR1():
                                         'hs_unreg':hs_unreg[0]['taxable_value'],
                                         'os_unreg':os_unreg[0]['taxable_value'],
                                         }
-        return data
+
+
+        return encode(data)
     def getData(self):
         data = {'b2b':self.table_b2b(),
                 'b2cs':self.table_b2cs(),
@@ -174,13 +189,16 @@ class GSTR3b():
                     AND pos != :hs
                     AND month=:month AND year=:year""",
                     table=self.sales_view, month=self.month, year=self.year, hs=19)
+        #print(rowa_hs,rowa_os)
 
-        data['row_a'] = {'taxable_value':rowa_os[0]['taxable_value'] + rowa_hs[0]['taxable_value'],
+        data['row_a'] = {'taxable_value':
+                            encode(rowa_os[0]['taxable_value'])
+                            +
+                            encode(rowa_hs[0]['taxable_value']) ,
                         'igst':rowa_os[0]['igst'],
-                        'cgst':rowa_hs[0]['cgst'],
-                        'sgst':rowa_hs[0]['sgst'],
-                        'hs':  rowa_hs[0],
-                        'os':  rowa_os[0]}
+                        'cgst':rowa_hs[0]['cgst'] ,
+                        'sgst':rowa_hs[0]['sgst'] ,
+                        }
 
 
 
@@ -188,13 +206,18 @@ class GSTR3b():
                     sum(rate_amount*rate) AS igst FROM :table WHERE sez='True'
                     AND month=:month AND year=:year""",
                     table=self.sales_view, month=self.month, year=self.year)
-        data['row_b'] = rowb[0]
+        data['row_b'] = {
+                'taxable_value':
+                    rowb[0]['taxable_value'] ,
+                 'igst': rowb[0]['igst']}
         rowc = db.execute("""SELECT sum(rate_amount) AS taxable_value
                         FROM :table WHERE sez='False' AND rate='0.0'
                         AND month=:month AND year=:year""",
                         table=self.sales_view, month=self.month, year=self.year)
-        data['row_c'] = rowc[0]
-        return data
+        data['row_c'] = {'taxable_value': rowc[0]['taxable_value']}
+
+        return encode(data)
+
     def table3_2(self):
         data = {}
         row_ur = db.execute("""SELECT
@@ -219,7 +242,7 @@ class GSTR3b():
                     """,
                     table=self.sales_view, month=self.month, year=self.year, hs=19)
         data['row_cmp'] = row_cmp
-        return data
+        return encode(data)
 
     def table4(self):
         data = {}
@@ -236,7 +259,7 @@ class GSTR3b():
                     table=self.purchase_view, month=self.month, year=self.year, hs=19)
         data.update(row_5_os[0])
         data.update(row_5_hs[0])
-        return data
+        return encode(data)
     def table5(self):
         data = {}
         row_hs = db.execute("""SELECT sum(rate_amount) AS intra_state_value
@@ -251,10 +274,10 @@ class GSTR3b():
                     table=self.purchase_view, month=self.month, year=self.year, hs=19)
         data.update(row_os[0])
         data.update(row_hs[0])
-        return data
+        return encode(data)
     def getData(self):
         data = {'table3_1':self.table3_1(),
                 'table3_2':self.table3_2(),
                 'table4'  :self.table4(),
                 'table5'  :self.table5(),}
-        return data
+        return encode(data)
