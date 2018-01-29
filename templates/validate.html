@@ -2,12 +2,18 @@
 <script type="text/javascript">
 {% include 'validate.js'%}
 </script>
+<style>
+.segment:hover{
+  background: rgba(34, 36, 38, 0.05);
+  height:130px;
+}
+</style>
 
   <div class="ui middle aligned list">
     <div class="ui container three column grid">
         <div class="row">
           <div class="column"></div>
-          <div class="column">
+          <div class="column" style="width:50%">
             <h2 style="text-align:center;">Authenticate</h2>
             <div class="ui horizontal divider">
               Select One
@@ -19,10 +25,11 @@
                 <div class="header">
                   <h3>{{item.name}}</h3>
                 </div>
+                <br>
                 <div class="ui label blue">
                   <p>{{item.gstin}}</p>
                 </div>
-                <div class="ui label yellow">
+                <div class="ui label orange">
                   <p>{{item.dealer}}</p>
                 </div>
 

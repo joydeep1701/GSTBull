@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="row">
+
+  <a href="{{url}}" onclick="toggle()" id="login" class="ui button green" target="_blank">Login to Google Drive</a>
+</div>
+<div class="row" id="key_form" style="display:none;">
+  <div class="row">
+    <h2>Enter OAuth Key</h2>
+    <div class="ui form">
+      <input type="text" class="form-control" id="key" placeholder="Enter Key Here">
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <button class="ui button green" onclick="sendkey()" id="submit">Submit</button>
+  </div>
+</div>
+<script>
+  {% include 'backup.js' %}
+</script>
+{% endblock %}

@@ -1,19 +1,25 @@
 {% extends "layout.html" %} {% block title %} Home {% endblock %}
 
 {% block main %}
+<!-- <div class="ui grid">
+  <div class="sixteen wide column">
+    <canvas id="salePurchaseMonthly" width="75%"></canvas>
+  </div>
+</div> -->
 <div class="ui three column grid">
   <div class="eight wide column">
     <canvas id="salesChart"></canvas>
   </div>
-  <div class="four wide columnt">
-    <canvas id="salesPartyChart"></canvas>
+  <div class="eight wide column">
+    <canvas id="purchaseChart"></canvas>
+
   </div>
 </div>
 <div class="ui three column grid">
   <div class="eight wide column">
-    <canvas id="purchaseChart"></canvas>
+    <canvas id="salesPartyChart"></canvas>
   </div>
-  <div class="four wide columnt">
+  <div class="eight wide column">
     <canvas id="purchasePartyChart"></canvas>
   </div>
 </div>

@@ -1,0 +1,69 @@
+{% extends 'layout.html' %} {% block main %}
+<div class="ui container">
+  <h2>{{session['company_name']}} - GST Returns</h2>
+  <div class="ui grid">
+    <div class="four wide column">
+      <div class="field">
+        <label>Select Month:  </label>
+        <div class="ui calendar" id="datepicker" style="width:200px">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" required placeholder="Month" name="date" readonly id="date">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="four wide column">
+        <div class="field">
+          <label>Select Return:  </label>
+          <select class="ui fluid dropdown" name="type" id="return_name">
+            <option value="gstr1">GSTR-1</option>
+            <option value="gstr3b">GSTR-3b</option>
+          </select>
+        </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="four wide column">
+      <div class="field">
+        <button type="button" class="ui button teal" name="button" onclick="openreturn()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function openreturn() {
+  date = document.getElementById('date').value;
+  return_name = document.getElementById('return_name').value;
+  if(date==='') {
+    showMessage("Select a date", "No Return date provided")
+    return;
+  }
+  date = date.split('-');
+  window.location.href = `http://${window.location.host}/${return_name}/${date[1]}/${date[0]}`;
+}
+  $(document).ready(function() {
+    $('#datepicker').calendar({
+      monthFirst: false,
+      type: 'month',
+      formatter: {
+        date: function(date, settings) {
+          if (!date) return '';
+          var day = date.getDate();
+          var month = date.getMonth();
+          var year = date.getFullYear();
+          //console.log(date, settings);
+          //return date;
+          monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+          return monthList[month] + '-' + year;
+        },
+      },
+      onChange: function(date, text, mode) {
+        //getVoucherData(text);
+        //console.log(date, text, mode);
+      }
+    });
+  });
+
+</script>
+{% endblock %}
